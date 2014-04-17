@@ -1,0 +1,12 @@
+bin/
+project/project/
+project/target/
+target/
+deploy/**/*.jar
+Client/deploy/release/
+.cache
+.classpath
+.project
+.settings
+*.class
+.DS_Store
