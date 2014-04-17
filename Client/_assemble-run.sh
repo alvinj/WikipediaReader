@@ -3,7 +3,7 @@
 #
 # remove old Server jar file
 #
-#rm ~/Library/Application\ Support/alvinalexander.com/WikipediaReader/WikipediaReaderServer.jar
+rm ~/Library/Application\ Support/alvinalexander.com/WikipediaReader/WikipediaReaderServer.jar
 
 # ------------
 # SBT Assembly

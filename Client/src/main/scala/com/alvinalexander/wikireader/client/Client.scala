@@ -12,7 +12,7 @@ import grizzled.slf4j.Logging
  */
 object Client extends App with Logging {
 //object Client extends App {
-    
+
     debug("***** STARTING Client APPLICATION *****")
     initForMac
     installServerJar
@@ -29,21 +29,15 @@ object Client extends App with Logging {
      * to the Library/AppSupport folder.
      */
     def installServerJar {
-        debug("ENTERED installServerJar")
         val serverFile = new File(Resources.CANON_SERVER_JAR_FILENAME)
         if (!serverFile.exists) {
-//            debug("*** About to copy the Server jar file..")
+            debug("Server jar file does not exist, creating it now")
             (new File(Resources.SERVER_JAR_DIR)).mkdirs
-//            debug("creating input stream ...")
             val is = getClass.getResourceAsStream(Resources.SERVER_JAR_NAME)
-//            debug("creating path ...")
             val path = FileSystems.getDefault.getPath(Resources.SERVER_JAR_DIR, Resources.SERVER_JAR_NAME)
-//            debug("doing copy ...")
             Files.copy(is, path)
-//            debug("doing is.close ...")
             is.close
-//            debug("*** Finished copying the Server jar file.")
-            Thread.sleep(1000)
+            Thread.sleep(250)
         }
     }
 

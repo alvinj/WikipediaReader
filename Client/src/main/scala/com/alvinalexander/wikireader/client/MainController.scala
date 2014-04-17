@@ -7,11 +7,12 @@ import akka.actor.Props
 import java.util.prefs.Preferences
 import com.alvinalexander.wikipediareader.common._
 import javax.swing.JOptionPane
+import grizzled.slf4j.Logging
 
 /**
  * This is the 'main' controller for the application.
  */
-class MainController extends MainControllerInterface {
+class MainController extends MainControllerInterface with Logging {
 
   // preferences
   val TRUE = "true"
@@ -22,26 +23,9 @@ class MainController extends MainControllerInterface {
   var preferredVoice = prefs.get(PREFS_PREFERRED_VOICE, "Alex")
   var lastUrl = ""
 
-  if (new java.io.File(Resources.CANON_SERVER_JAR_FILENAME).exists) println("   SERVER JAR FILE EXISTS")
-  
-  val thread = new Thread {
-    override def run {
-      // start the server process
-      import scala.sys.process._
-      val serverProcess = Process(Seq(
-          "java", 
-          "-classpath", 
-          Resources.CANON_SERVER_JAR_FILENAME,
-          "-Dapple.awt.UIElement=true",
-          Resources.SERVER_MAIN_CLASS))
-      val serverProcessStream = serverProcess.lines_!  // original
-      //serverProcess.lines_!
-      //val foo = serverProcess lines_! ProcessLogger(line => ())
-      //serverProcessStream.toSeq.foreach(println)      
-    }
-  }
-  thread.start
-  
+  // start the Server
+  (new Server).start
+
   // state
   var currentlySpeaking = false
   var speakingWasPaused = false   // needed for pause/restart

@@ -18,7 +18,7 @@ object Server extends App  {
 
     val system = ActorSystem("WikiReaderServerSystem")
     val sentenceSpeaker = system.actorOf(Props[SentenceSpeaker], name = "SentenceSpeaker")
-    sentenceSpeaker ! "The speaker is alive"
+    sentenceSpeaker ! "The Wikipedia Reader is alive."
 
 }
 
