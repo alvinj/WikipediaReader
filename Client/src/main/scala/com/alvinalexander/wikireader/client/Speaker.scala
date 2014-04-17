@@ -192,7 +192,7 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
     //context.actorSelection("/user/UIHelper") ! currentSentence
     uiHelper ! currentSentence
     
-    if (useMultipleVoices) {
+    if (useMultipleVoices && currentSentenceCounter==0) {
         currentVoice = getNextVoice
     }
 
@@ -206,6 +206,7 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
   
   def handleEndOfStoryReached {
       endOfStoryReached = true
+      Thread.sleep(1000)  // TODO make this configurable
       sentenceSpeaker ! "End of story"
     
       // TODO this needs to wait until i get the message back from the 
