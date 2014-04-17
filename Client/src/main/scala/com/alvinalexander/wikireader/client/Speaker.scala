@@ -25,7 +25,7 @@ class Speaker(uiHelper: ActorRef) extends Actor {
       case SetVoice(voice) => speakerHelper ! SetVoice(voice)
       case SetVoices(voices) => speakerHelper ! SetVoices(voices)
       case StopSpeaking => speakerHelper ! StopSpeaking      
-      case EndOfStoryReached => // TODO
+      case EndOfStoryReached => // TODO anything to do here?
       case PauseSpeaking => speakerHelper ! PauseSpeaking
       case ResumeSpeaking => speakerHelper ! ResumeSpeaking
       case FirstParagraph => speakerHelper ! FirstParagraph 
@@ -164,6 +164,7 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
   def speakNextSentence {
     
     if (stopTalking) return
+    if (endOfStoryReached) return
     
     val currentParagraph = cleanParagraphs(currentParagraphCounter)
     var sentencesInCurrentParagraph = getSentencesFromParagraph(currentParagraph)

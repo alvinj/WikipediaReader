@@ -1,5 +1,11 @@
 package com.alvinalexander.wikireader.client
 
+/**
+ * The purpose of this class is to handle, massage, and manipulate the
+ * text from a Wikipedia web page. In short, the text needs to be cleaned
+ * up and enhanced for reading, and this object contains methods to do
+ * that cleanup work.
+ */
 object WikipediaTextUtils {
 
   /**
@@ -69,6 +75,7 @@ object WikipediaTextUtils {
       a = a.replaceAll("&#160;", " ")          // non-breaking space
       a = a.replaceAll("&nbsp;", " ")          // non-breaking space
       a = a.replaceAll("&#169;", "copyright")
+
       a.trim
   }
 

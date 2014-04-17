@@ -97,6 +97,11 @@ This software is released under the licensing terms of the
 GNU GPL Version 3. See the accompanying LICENSE file for more
 details.
 
+Misc
+----
+
+Output logging goes to /var/log/WikipediaReader.log.
+
 
 
 

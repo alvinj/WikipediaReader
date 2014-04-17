@@ -32,10 +32,17 @@ fi
 
 sleep 1
 
+#--------------------------------------------------
+# Manually Adjust Info.plist File (Add Hi-Res Key)
+#--------------------------------------------------
+
+cd ..
+sh _addHiResKeyToPlistFile.sh
+
 # ---
 # RUN
 # ---
 
-open release/WikiReader.app
+open deploy/release/WikiReader.app
 
 
