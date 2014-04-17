@@ -13,7 +13,6 @@ import grizzled.slf4j.Logging
 object Client extends App with Logging {
 //object Client extends App {
 
-    debug("***** STARTING Client APPLICATION *****")
     initForMac
     installServerJar
     new MainController

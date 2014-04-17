@@ -46,7 +46,7 @@ class MainController extends MainControllerInterface with Logging {
   // TODO the only reason i'm passing the uiHelper to the Speaker is that i couldn't
   // get the SpeakerHelper to look up the uiHelper
   val uiHelper = actorSystem.actorOf(Props(new UIHelper(this)), name = "UIHelper")  
-  val speaker = actorSystem.actorOf(Props(new Speaker(uiHelper)), name = "Speaker")  
+  val speaker = actorSystem.actorOf(Props(new Speaker(uiHelper, this)), name = "Speaker")  
   
   displayMainFrame
 
@@ -177,6 +177,11 @@ class MainController extends MainControllerInterface with Logging {
   def doPreviousParagraphAction { speaker ! PreviousParagraph }   // <<
   def doNextParagraphAction { speaker ! NextParagraph }           // >>
   def doLastParagraphAction { speaker ! LastParagraph }           // >>|
+
+  def handleEndOfStoryReached {
+      mainFrameController.setPlayPauseButtonToPlay
+      currentlySpeaking = false
+  }
 
   def getSelectedVoice = {
     // ???

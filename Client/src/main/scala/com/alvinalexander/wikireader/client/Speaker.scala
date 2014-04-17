@@ -15,7 +15,7 @@ import akka.actor.ActorRef
  * It has the responsibility to speak the Wikipedia story paragraphs
  * in the given voice.
  */
-class Speaker(uiHelper: ActorRef) extends Actor {
+class Speaker(uiHelper: ActorRef, mainController: MainController) extends Actor {
 
   val speakerHelper = context.actorOf(Props(new SpeakerHelper(uiHelper)), name = "SpeakerHelper")
 
@@ -25,7 +25,9 @@ class Speaker(uiHelper: ActorRef) extends Actor {
       case SetVoice(voice) => speakerHelper ! SetVoice(voice)
       case SetVoices(voices) => speakerHelper ! SetVoices(voices)
       case StopSpeaking => speakerHelper ! StopSpeaking      
-      case EndOfStoryReached => // TODO anything to do here?
+      case EndOfStoryReached =>
+          // TODO this was a last-minute hack
+          mainController.handleEndOfStoryReached
       case PauseSpeaking => speakerHelper ! PauseSpeaking
       case ResumeSpeaking => speakerHelper ! ResumeSpeaking
       case FirstParagraph => speakerHelper ! FirstParagraph 
@@ -144,6 +146,7 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
   }
 
   def startSpeakingStory {
+      endOfStoryReached = false
       initializeCounters
       speakNextSentence
   }
@@ -206,6 +209,7 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
   
   def handleEndOfStoryReached {
       endOfStoryReached = true
+      initializeCounters
       Thread.sleep(1000)  // TODO make this configurable
       sentenceSpeaker ! "End of story"
     

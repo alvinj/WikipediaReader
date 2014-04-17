@@ -70,7 +70,7 @@ public class WikiReaderMainPanel2 extends JPanel {
         return wikiOutputAreaScrollPane;
     }
 
-    public JEditorPane getWikiOutputArea() {
+    public JTextArea getWikiOutputArea() {
         return wikiOutputArea;
     }
 
@@ -87,7 +87,9 @@ public class WikiReaderMainPanel2 extends JPanel {
         fastForwardBtnLabel = new JLabel();
         endBtnLabel = new JLabel();
         wikiOutputAreaScrollPane = new JScrollPane();
-        wikiOutputArea = new JEditorPane();
+        wikiOutputArea = new JTextArea();
+        wikiOutputArea.setLineWrap(true);
+        wikiOutputArea.setWrapStyleWord(true);
         CellConstraints cc = new CellConstraints();
 
         //======== this ========
@@ -212,7 +214,7 @@ public class WikiReaderMainPanel2 extends JPanel {
             wikiOutputArea.setForeground(Color.DARK_GRAY);
             wikiOutputArea.setBackground(new Color(240, 240, 240));
             // AJA
-            wikiOutputArea.setFont(new Font("Helvetica Neue", Font.PLAIN, 17));
+            wikiOutputArea.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
             wikiOutputArea.setMinimumSize(new Dimension(420, 36));
             wikiOutputAreaScrollPane.setViewportView(wikiOutputArea);
         }
@@ -232,7 +234,7 @@ public class WikiReaderMainPanel2 extends JPanel {
     private JLabel fastForwardBtnLabel;
     private JLabel endBtnLabel;
     private JScrollPane wikiOutputAreaScrollPane;
-    private JEditorPane wikiOutputArea;
+    private JTextArea wikiOutputArea;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
 

@@ -11,6 +11,9 @@ import javax.swing.JOptionPane
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.WindowEvent
+import Resources._
+import javax.swing.SwingUtilities
+  
 
 class MainFrameController(main: MainController) 
 extends DropHandlerInterface
@@ -88,17 +91,17 @@ extends DropHandlerInterface
 
   // let user work with jlist from the keyboard
   urlsList.addKeyListener(new KeyAdapter {
-    override def keyPressed(e: KeyEvent)
-    {
-      if (e.getKeyCode == KeyEvent.VK_DELETE)
+      override def keyPressed(e: KeyEvent)
       {
-        val selectedItem = urlsList.getSelectedValue
-        urlsModel.removeElement(selectedItem)
-        UrlsDataStore.removeUrl(selectedItem)
-      } else if (e.getKeyCode == KeyEvent.VK_ENTER) {
-        handleUrlFieldAction
+          if (e.getKeyCode == KeyEvent.VK_DELETE)
+          {
+              val selectedItem = urlsList.getSelectedValue
+              urlsModel.removeElement(selectedItem)
+              UrlsDataStore.removeUrl(selectedItem)
+          } else if (e.getKeyCode == KeyEvent.VK_ENTER) {
+              handleUrlFieldAction
+          }
       }
-    }
    })
    
 
@@ -106,8 +109,8 @@ extends DropHandlerInterface
   // TODO this should happen on a thread/future
   // TODO move this logic to the MainController
   def handleUrlFieldAction {
-    val url = getSelectedUrl
-    main.handleUrlFieldAction(url)
+      val url = getSelectedUrl
+      main.handleUrlFieldAction(url)
   }
   
   def getSelectedUrl = mainPanel.getUrlsList.getSelectedValue
@@ -118,8 +121,16 @@ extends DropHandlerInterface
    */
 
   def handleDropEvent(url: String) {
-    UrlsDataStore.addUrl(url)
-    urlsModel.addElement(url)
+      UrlsDataStore.addUrl(url)
+      urlsModel.addElement(url)
+  }
+  
+  def setPlayPauseButtonToPlay {
+      SwingUtilities.invokeLater(new Runnable {
+          def run {
+              playPauseButton.setIcon(vcrPlayImage)
+          }
+      })
   }
   
   /**
@@ -129,10 +140,9 @@ extends DropHandlerInterface
    * 
    */
   
-  import Resources._
-  
   // vcr buttons
   // TODO move all of this logic to the MainController?
+  // TODO change all these direct accesses of `currentlySpeaking` to methods
   def configureVcrButtonRolloverEffects {
     beginningButton.addMouseListener(new MouseAdapter {
       override def mouseEntered(e: MouseEvent) { beginningButton.setIcon(vcrBeginningHoverImage) }
@@ -191,24 +201,23 @@ extends DropHandlerInterface
           Thread.sleep(200)
           main.handleStopSpeakingAction
         }
-        
       }
     })
     fastForwardButton.addMouseListener(new MouseAdapter {
-      override def mouseEntered(e: MouseEvent) { fastForwardButton.setIcon(vcrFastForwardHoverImage) }
-      override def mouseExited(e: MouseEvent) { fastForwardButton.setIcon(vcrFastForwardImage) }
-      override def mouseClicked(e: MouseEvent) { 
-        fastForwardButton.setIcon(vcrFastForwardClickImage)
-        main.doNextParagraphAction
-      }
+        override def mouseEntered(e: MouseEvent) { fastForwardButton.setIcon(vcrFastForwardHoverImage) }
+        override def mouseExited(e: MouseEvent) { fastForwardButton.setIcon(vcrFastForwardImage) }
+        override def mouseClicked(e: MouseEvent) { 
+            fastForwardButton.setIcon(vcrFastForwardClickImage)
+            main.doNextParagraphAction
+        }
     })
     endButton.addMouseListener(new MouseAdapter {
-      override def mouseEntered(e: MouseEvent) { endButton.setIcon(vcrEndHoverImage) }
-      override def mouseExited(e: MouseEvent) { endButton.setIcon(vcrEndImage) }
-      override def mouseClicked(e: MouseEvent) { 
-        endButton.setIcon(vcrEndClickImage)
-        main.doLastParagraphAction
-      }
+        override def mouseEntered(e: MouseEvent) { endButton.setIcon(vcrEndHoverImage) }
+        override def mouseExited(e: MouseEvent) { endButton.setIcon(vcrEndImage) }
+        override def mouseClicked(e: MouseEvent) { 
+            endButton.setIcon(vcrEndClickImage)
+            main.doLastParagraphAction
+        }
     })
   }
   
