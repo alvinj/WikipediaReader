@@ -195,7 +195,8 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
     //context.actorSelection("/user/UIHelper") ! currentSentence
     uiHelper ! currentSentence
     
-    if (useMultipleVoices && currentSentenceCounter==0) {
+    //if (useMultipleVoices && currentSentenceCounter==0) {
+    if (useMultipleVoices) {
         currentVoice = getNextVoice
     }
 
