@@ -12,9 +12,9 @@ class TextUtilsSpec extends FunSpec with BeforeAndAfter {
     var inputStream = new ByteArrayInputStream(testPage.getBytes)
 
     // this wiki page should result in these four paragraphs
-    val p0s0 = "Martin Odersky is a German computer scientist and professor of programming methods at EPFL in Switzerland."
-    val p0s1 = "He specializes in code analysis and programming languages."
-    val p0s2 = "He designed the Scala programming language and Generic Java, and built the current generation of javac, the Java compiler."
+    val p0s0 = "Martin Odersky is a German computer scientist, and professor of programming methods at EPFL in Switzerland."
+    val p0s1 = "He specializes in code analysis, and programming languages."
+    val p0s2 = "He designed the Scala programming language, and Generic Java, and built the current generation of javac, the Java compiler."
     val p0s3 = "In 2007 he was inducted as a Fellow of the Association for Computing Machinery."
 
     before {
@@ -60,12 +60,41 @@ class TextUtilsSpec extends FunSpec with BeforeAndAfter {
         it("fourth paragraph should not end with '[4]'") {
             assert(!cleanedParagraphs(3).endsWith("[4]"))
         }
-//        println("\nRAW PARAS")
-//        for ((p,i) <- rawParagraphs.zipWithIndex) println(s"$i $p")
-//        println("\nCLEAN PARAS")
-//        for ((p,i) <- cleanedParagraphs.zipWithIndex) println(s"$i) '$p'")
+    }
+    
+    // expected result:
+    //"In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).", 
+    //" He did postdoctoral work at IBM and Yale."
+//    describe("testing TextUtils::reAnalyzeSentences") {
+//        import WikipediaTextUtils._
+//        val rawSentences = MartinOPhDParagraph.sentences
+//        // analyze the sentences twice, then clean them up
+//        val betterSentences = makeBetterSentences(rawSentences)
+//        println("=== DEBUG ===")
+//        betterSentences.foreach(println)
+//        it ("should have two sentences") {
+//            assert(betterSentences.length == 2)
+//        }
+//        it ("first sentence should match") {
+//            assert(betterSentences(0) == "In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).")
+//        }
+//        it ("second sentence should match") {
+//            assert(betterSentences(1) == "He did postdoctoral work at IBM and Yale.")
+//        }
+//    }
+    
+    describe("clean run-on sentence") {
+        val sentence = PeterFalkRunOnSentence.sentence
+        val betterSentence = "He was nominated for an Academy Award twice, and won the Emmy Award on five occasions, and the Golden Globe Award once."
+        val result = WikipediaTextUtils.cleanWikipediaSentence(sentence)
+        println("=== DEBUG ===")
+        println(result)
+        assert(result == betterSentence)
     }
 
+    
+    
+    
 }
 
 
