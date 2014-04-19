@@ -62,37 +62,85 @@ class TextUtilsSpec extends FunSpec with BeforeAndAfter {
         }
     }
     
-    // expected result:
-    //"In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).", 
-    //" He did postdoctoral work at IBM and Yale."
-//    describe("testing TextUtils::reAnalyzeSentences") {
-//        import WikipediaTextUtils._
-//        val rawSentences = MartinOPhDParagraph.sentences
-//        // analyze the sentences twice, then clean them up
-//        val betterSentences = makeBetterSentences(rawSentences)
-//        println("=== DEBUG ===")
-//        betterSentences.foreach(println)
-//        it ("should have two sentences") {
-//            assert(betterSentences.length == 2)
-//        }
-//        it ("first sentence should match") {
-//            assert(betterSentences(0) == "In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).")
-//        }
-//        it ("second sentence should match") {
-//            assert(betterSentences(1) == "He did postdoctoral work at IBM and Yale.")
-//        }
-//    }
+    /**
+     * The first call should bring the 'D.' back up to the end of 'Ph.', and the second call
+     * should join 'from ETH ...' after the 'Ph.D.'.
+     * expected result:
+     * "In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).", 
+     * " He did postdoctoral work at IBM and Yale."
+     */
+    describe("testing TextUtils::makeBetterSentences with MartinO sentences") {
+        import WikipediaTextUtils._
+        val rawSentences = Seq(
+            "In 1989, he received his Ph.",
+            "D.",
+            " from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).", 
+            " He did postdoctoral work at IBM and Yale."
+        )
+        val betterSentences = makeBetterSentences(rawSentences)
+        println("===== DEBUG =====")
+        betterSentences.foreach(println)
+        it ("should have two sentences") {
+            assert(betterSentences.length == 2)
+        }
+        it ("first sentence should match") {
+            assert(betterSentences(0) == "In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).")
+        }
+        it ("second sentence should match") {
+            assert(betterSentences(1) == "He did postdoctoral work at IBM and Yale.")
+        }
+    }
     
-    describe("clean run-on sentence") {
-        val sentence = PeterFalkRunOnSentence.sentence
-        val betterSentence = "He was nominated for an Academy Award twice, and won the Emmy Award on five occasions, and the Golden Globe Award once."
-        val result = WikipediaTextUtils.cleanWikipediaSentence(sentence)
-        println("=== DEBUG ===")
-        println(result)
-        assert(result == betterSentence)
+    describe("make sure poor last sentence doesn't crash makeBetterSentences") {
+        import WikipediaTextUtils._
+        val rawSentences = Seq(
+            "In 1989, he received his Ph.",
+            "D.",
+            " from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).", 
+            " He did postdoctoral work at IBM and Yale, Mr."  // intentionally bad ending
+        )
+        val betterSentences = makeBetterSentences(rawSentences)
+        it ("should have two sentences") {
+            assert(betterSentences.length == 2)
+        }
+        it ("first sentence should match") {
+            assert(betterSentences(0) == "In 1989, he received his Ph.D. from ETH Zurich under Niklaus Wirth, who is best known as the designer of several programming languages (including Pascal).")
+        }
+        it ("second sentence should match") {
+            assert(betterSentences(1) == "He did postdoctoral work at IBM and Yale, Mr.")
+        }
+    }
+    
+    /**
+     * Result should be:
+     * "Peter Michael Falk was an American actor, best known for his role as Lt. Columbo in the television series Columbo."
+     * "He appeared in numerous films such as The Princess Bride, The Great Race and Next, and television guest roles."
+     */
+    describe("handle Peter Falk string with 'Lt.'") {
+        import WikipediaTextUtils._
+        val peterFalkSentences = Seq(
+            "Peter Michael Falk was an American actor, best known for his role as Lt.",
+            " Columbo in the television series Columbo.",
+            " He appeared in numerous films such as The Princess Bride, The Great Race and Next, and television guest roles.")
+        val betterSentences = makeBetterSentences(peterFalkSentences)
+        it ("should have two sentences") {
+            assert(betterSentences.length == 2)
+        }
+        it ("first sentence should match") {
+            assert(betterSentences(0) == "Peter Michael Falk was an American actor, best known for his role as Lt. Columbo in the television series Columbo.")
+        }
+        it ("second sentence should match") {
+            assert(betterSentences(1) == "He appeared in numerous films such as The Princess Bride, The Great Race and Next, and television guest roles.")
+        }
+    }
+    
+    describe("clean Peter Falk run-on sentence") {
+        val peterFalkSentence = "He was nominated for an Academy Award twice and won the Emmy Award on five occasions and the Golden Globe Award once."
+        val improvedSentence = "He was nominated for an Academy Award twice, and won the Emmy Award on five occasions, and the Golden Globe Award once."
+        val result = WikipediaTextUtils.cleanWikipediaSentence(peterFalkSentence)
+        assert(result == improvedSentence)
     }
 
-    
     
     
 }

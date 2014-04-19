@@ -47,10 +47,11 @@ object WikipediaTextUtils {
       removeMultipleBlankSpaces(trim(reAnalyzeSentences(reAnalyzeSentences(sentences))))
   
   /**
+   * Help fix sentences that were broken up poorly, primarily because a paragraph contained
+   * something like "Ph.D.", "Lt.", "Mr.", or other abbreviations that end in a period.
+   * Eventually this method should work recursively on the sentences it's given until
+   * the sentences are clean, but right now you need to call it multiple times.
    * TODO improve this algorithm and clean it up
-   * TODO this method will die a horrible death if the last sentence matches a pattern,
-   *      because it will try to reach out for the 'next' sentence
-   * The first attempt at splitting sentences is naive, so re-join sentences as needed.
    */
   private def reAnalyzeSentences(sentences: Seq[String]): Seq[String] = {
       var skip1 = false
@@ -65,10 +66,10 @@ object WikipediaTextUtils {
           } else {
               currSentence = s
               if (s.matches(".* [a-zA-Z]{2}\\.$")) {    // "Ph." or "Lt." or "Mr."
-                  currSentence = currSentence + " " + sentences(c+1)
+                  currSentence = currSentence + sentences(c+1)
                   skip1 = true
               } else if (s.matches(".* [a-zA-Z]{2}\\.[a-zA-Z]\\.$")) {    // "Ph.D."
-                  currSentence = currSentence + " " + sentences(c+1)
+                  currSentence = currSentence + sentences(c+1)
                   skip1 = true
               }
               currSentence
