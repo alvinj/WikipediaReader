@@ -23,8 +23,14 @@ class MainController extends MainControllerInterface with Logging {
   var preferredVoice = prefs.get(PREFS_PREFERRED_VOICE, "Alex")
   var lastUrl = ""
 
-  // start the Server
-  (new Server).start
+  try {
+      // start the Server
+      (new Server).start
+  } catch {
+      case t: Throwable => 
+          System.err.println("*** Throwable, coming up ***")
+          t.printStackTrace
+  }
 
   // state
   var currentlySpeaking = false
@@ -59,14 +65,20 @@ class MainController extends MainControllerInterface with Logging {
   def handleUrlFieldAction(url: String) {
     if (url != null) {
       lastUrl = url
+      if (url.endsWith("txt")) {
+          val rawParagraphs = TextFileUtils.getParagraphsFromFileUrl(url)
+          speakParagraphs(rawParagraphs)
+      } else {
+      // assume it's an html url from wikipedia
       try {
-        val is = WikipediaUtils.getUrlInputStream(url, 2000, 2000)
-        val rawParagraphs = WikipediaUtils.getRawParagraphs(is)
-        is.close
-        speakParagraphs(rawParagraphs)
+          val is = WikipediaUtils.getUrlInputStream(url, 2000, 2000)
+          val rawParagraphs = WikipediaUtils.getRawParagraphs(is)
+          is.close
+          speakParagraphs(rawParagraphs)
       } catch {
-        case e: java.net.UnknownHostException =>
-          JOptionPane.showMessageDialog(mainFrame, "Sorry, can't connect to the Internet.")
+          case e: java.net.UnknownHostException =>
+              JOptionPane.showMessageDialog(mainFrame, "Sorry, can't connect to the Internet.")
+      }
       }
     }
   }

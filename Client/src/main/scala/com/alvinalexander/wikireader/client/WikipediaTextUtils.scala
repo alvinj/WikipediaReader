@@ -36,8 +36,20 @@ object WikipediaTextUtils {
       val sentences = cleanParagraph.split("\\.")
       val sentences2 = for {
           sentence <- sentences
-      } yield s"${sentence.trim}."
+      } yield addPeriodToEndOfSentenceIfNeeded(sentence.trim)
       makeBetterSentences(sentences2)
+  }
+  
+  private def addPeriodToEndOfSentenceIfNeeded(sentence: String) = {
+      if (sentence.endsWith("?")) {
+          sentence
+      } else if (sentence.endsWith("!")) {
+          sentence
+      } else if (!sentence.endsWith(".")) {
+          sentence + "."
+      } else {
+          sentence + "."
+      }
   }
   
   /**
@@ -65,10 +77,10 @@ object WikipediaTextUtils {
               s
           } else {
               currSentence = s
-              if (s.matches(".* [a-zA-Z]{2}\\.$")) {    // "Ph." or "Lt." or "Mr."
+              if (s.matches(".* [a-zA-Z]{2}\\.$")) { // "Ph." or "Lt." or "Mr."
                   currSentence = currSentence + sentences(c+1)
                   skip1 = true
-              } else if (s.matches(".* [a-zA-Z]{2}\\.[a-zA-Z]\\.$")) {    // "Ph.D."
+              } else if (s.matches(".* [a-zA-Z]{2}\\.[a-zA-Z]\\.$")) { // "Ph.D."
                   currSentence = currSentence + sentences(c+1)
                   skip1 = true
               }

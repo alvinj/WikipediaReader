@@ -11,7 +11,7 @@ object TextUtils {
       val sentences = cleanParagraph.split("\\.")
       for {
           sentence <- sentences
-      } yield s"${sentence.trim}."
+      } yield s"${sentence.trim}"
   }
   
   /**

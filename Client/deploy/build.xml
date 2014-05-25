@@ -1,6 +1,6 @@
-<project name="WikiReader" default="create-bundle" basedir=".">
+<project name="Reader" default="create-bundle" basedir=".">
 
-  <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask"/>
+  <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="appbundler-1.0.jar"/>
   <property environment="env"/>
 
   <!-- input stuff -->
@@ -23,8 +23,8 @@
 
   <target name="create-bundle" depends="clean">
   <bundleapp outputdirectory="${release.dir}"
-      name="WikiReader"
-      displayname="WikiReader"
+      name="Reader"
+      displayname="Reader"
       identifier="com.alvinalexander.wikireader.client.Client"
       shortversion="0.1"
       icon="WikiReader3.icns"

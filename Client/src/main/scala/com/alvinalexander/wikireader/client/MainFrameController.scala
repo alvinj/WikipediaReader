@@ -21,7 +21,7 @@ extends DropHandlerInterface
 
   val backgroundColor = new Color(248, 248, 248)
   val alphaComposite = 0.96f
-  val title = "Wikipedia Reader"
+  val title = "Reader"
   val frameSize = new Dimension(720, 510)  // height sized to see 6 urls
   val TAB_WIDTH = 320
 

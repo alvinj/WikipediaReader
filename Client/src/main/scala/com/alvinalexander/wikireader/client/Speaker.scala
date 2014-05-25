@@ -186,6 +186,9 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
         incrementParagraphCounter
         pointSentenceCounterToFirstSentence
         sentencesInCurrentParagraph = getSentencesFromParagraph(getCurrentParagraph)
+        // TODO this 'sleep' line is a hack, put here b/c the server doesn't know when we've reached the end of a paragraph
+        // (but we do)
+        Thread.sleep(400)
     }
     
     // `sentences` should be valid for the old paragraph or the next paragraph
@@ -195,8 +198,8 @@ class SpeakerHelper(uiHelper: ActorRef) extends Actor {
     //context.actorSelection("/user/UIHelper") ! currentSentence
     uiHelper ! currentSentence
     
-    //if (useMultipleVoices && currentSentenceCounter==0) {
-    if (useMultipleVoices) {
+    if (useMultipleVoices && currentSentenceCounter==0) {
+    //if (useMultipleVoices) {
         currentVoice = getNextVoice
     }
 
