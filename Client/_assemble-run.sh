@@ -43,6 +43,6 @@ sh _addHiResKeyToPlistFile.sh
 # RUN
 # ---
 
-open deploy/release/WikiReader.app
+open deploy/release/Reader.app
 
 

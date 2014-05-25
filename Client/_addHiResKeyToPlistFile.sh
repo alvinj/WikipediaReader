@@ -4,5 +4,5 @@
 sed -i '' '/\/dict/i \
 <key>NSHighResolutionCapable</key> \
 <true/>
-' deploy/release/WikiReader.app/Contents/Info.plist 
+' deploy/release/Reader.app/Contents/Info.plist 
 

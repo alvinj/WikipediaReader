@@ -1,6 +1,7 @@
 To-Do List
 ==========
 
+* fix the bug where it doesn't handle "observer-excellent" properly in Sherlock Holmes "Scandal in Bohemia"
 * add a Help screen, especially to list available voices
   * preferable the Voice textfield will be a type-ahead field one day
 * improve the process of starting and stopping the server
